@@ -149,7 +149,7 @@ const HOLDINGS=286, DAY_ZERO=new Date('2026-06-07T00:00:00Z');
 const DAILY_DROP=1.00, START_PRICE=14.93;
 const dayNum=Math.max(0,Math.floor((Date.now()-DAY_ZERO)/86400000));
 const dayBasePrice=Math.max(0.01,START_PRICE-dayNum*DAILY_DROP);
-document.getElementById('cur-serial').textContent=64+dayNum*89;
+document.getElementById('cur-serial').textContent=212+dayNum*89;
 
 let livePrice=dayBasePrice, prevPrice=dayBasePrice, currentTF='1h';
 const candleData=[];
