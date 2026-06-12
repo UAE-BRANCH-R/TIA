@@ -136,7 +136,7 @@ canvas#cc{display:block;width:100%}
 
 <script>
 const HOLDINGS    = 286;
-const START_PRICE = 6.03;
+const START_PRICE = 10.03;
 const DAILY_DROP  = 0.73;
 const DAY_ZERO    = new Date('2026-06-08T00:00:00Z');
 
@@ -161,7 +161,7 @@ function getDayPrice(d) {
 
 const dayNum       = getDayNum();
 const dayBasePrice = getDayPrice(dayNum);
-document.getElementById('cur-serial').textContent = 432 + dayNum * 89;
+document.getElementById('cur-serial').textContent = 932 + dayNum * 89;
 
 let livePrice  = dayBasePrice;
 let prevPrice  = dayBasePrice;
