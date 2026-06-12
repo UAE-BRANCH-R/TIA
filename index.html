@@ -97,6 +97,7 @@ canvas#cc{display:block;width:100%}
     <div class="stat-cell"><div class="sc-lbl">MKT CAP</div><div class="sc-val" id="st-mc">$1.24B</div></div>
   </div>
 
+  <!-- BUYING NEWS NOTIFICATION BOX -->
   <div id="news-box" style="display:none; background: rgba(0, 230, 118, 0.1); margin: 10px 12px 0; border-radius: 6px; border: 1px dashed var(--green); padding: 10px 14px; font-family: var(--ui);">
     <span style="color: var(--green); font-weight: bold; font-family: var(--mono); font-size: 11px;">[BREAKING NEWS]</span>
     <p id="news-text" style="font-size: 13px; color: var(--text); margin-top: 2px; font-weight: 500;"></p>
@@ -144,6 +145,11 @@ const START_PRICE = 10.03;
 const DAILY_DROP  = 0.73;
 const DAY_ZERO    = new Date('2026-06-08T00:00:00Z');
 
+// Target news time: Today at 6:35 PM (18:35)
+const targetTime = new Date();
+targetTime.setHours(18, 35, 0, 0);
+const PUMP_START_TIMESTAMP = Math.floor(targetTime.getTime() / 1000);
+
 function makePRNG(seed) {
   let s = seed >>> 0;
   return function() {
@@ -179,6 +185,20 @@ function tfHash(tf) {
   return h;
 }
 
+// Check if news pump is currently active based on system time
+function isPumpActiveNow() {
+  return (Math.floor(Date.now() / 1000) >= PUMP_START_TIMESTAMP);
+}
+
+function getHistoricalPriceAtTime(timestamp, rng) {
+  // If this specific candle time is after 6:35 PM, it gets the pumped price range
+  if (timestamp >= PUMP_START_TIMESTAMP) {
+    return 13.43 + rng() * (14.64 - 13.43);
+  }
+  // Otherwise it gets the normal base price
+  return dayBasePrice;
+}
+
 function seedCandles(tf) {
   candleData.length = 0;
   const seed = (dayNum * 1000 + Math.abs(tfHash(tf))) >>> 0;
@@ -186,30 +206,51 @@ function seedCandles(tf) {
 
   const s    = tfSecs[tf];
   const cnt = tfCount[tf];
-  const dps  = DAILY_DROP / (86400 / s);
-
-  let p = dayBasePrice + cnt * dps * 1.1;
+  
   const now = Math.floor(Date.now() / 1000);
   const slotNow = Math.floor(now / s) * s;
 
   for (let i = 0; i < cnt; i++) {
-    const t   = slotNow - (cnt - i) * s;
-    const dir = rng() > 0.45 ? -1 : 1;
-    const body = rng() * 0.1 * (s / 3600);
-    const o = p;
-    const c = Math.max(0.01, o + dir * body);
-    const h = Math.max(o, c) + rng() * 0.04 * (s / 3600);
-    const l = Math.min(o, c) - rng() * 0.04 * (s / 3600);
+    const t = slotNow - (cnt - i) * s;
+    
+    // Get baseline price for this specific candle's timestamp
+    let baseVal = getHistoricalPriceAtTime(t, rng);
+    let prevBaseVal = getHistoricalPriceAtTime(t - s, rng);
+
+    let o, c, h, l;
+
+    // Detect if this specific candle is the "News Trigger Candle" (crosses 6:35 PM)
+    if (t >= PUMP_START_TIMESTAMP && (t - s) < PUMP_START_TIMESTAMP) {
+      // Massive green breakout candle!
+      o = prevBaseVal + (rng() - 0.5) * 0.04;
+      c = baseVal;
+      h = Math.max(o, c) + rng() * 0.2;
+      l = Math.min(o, c) - rng() * 0.05;
+    } else {
+      // Normal candle behavior inside its respective range
+      const dir = rng() > 0.48 ? -1 : 1;
+      const body = rng() * (baseVal > 10 ? 0.15 : 0.04);
+      o = baseVal + (rng() - 0.5) * (baseVal > 10 ? 0.1 : 0.02);
+      c = Math.max(0.01, o + dir * body);
+      h = Math.max(o, c) + rng() * (baseVal > 10 ? 0.08 : 0.02);
+      l = Math.min(o, c) - rng() * (baseVal > 10 ? 0.08 : 0.02);
+      
+      // Keep boundaries forced within limits for visual clarity
+      if (baseVal > 10) {
+        if (c < 13.43) c = 13.43 + rng()*0.2;
+        if (c > 14.64) c = 14.64 - rng()*0.2;
+      }
+    }
+
     candleData.push({t, o, h, l, c});
-    p = c - dps * (0.8 + rng() * 0.4);
-    if (p < 0.01) p = 0.01;
   }
 
+  // Sync last candle with the true dynamic live price
   if (candleData.length) {
     const last = candleData[candleData.length - 1];
-    last.c = dayBasePrice;
-    last.h = Math.max(last.o, last.c) + 0.02;
-    last.l = Math.min(last.o, last.c) - 0.02;
+    last.c = livePrice;
+    if (livePrice > last.h) last.h = livePrice;
+    if (livePrice < last.l) last.l = livePrice;
   }
 }
 
@@ -353,16 +394,18 @@ window.switchTF = function(tf, btn) {
   currentTF = tf;
   document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
+  // Re-seed based on current actual time state
+  if (isPumpActiveNow()) {
+    livePrice = 13.43 + Math.random() * (14.64 - 13.43);
+  } else {
+    livePrice = dayBasePrice;
+  }
   seedCandles(tf);
   drawChart();
 };
 
-function checkNewsTrigger() {
-  const now = new Date();
-  const hrs = now.getHours();
-  const mins = now.getMinutes();
-  
-  if (hrs === 18 && mins >= 35) {
+function handleNewsDisplay() {
+  if (isPumpActiveNow()) {
     const newsBox = document.getElementById('news-box');
     if (newsBox.style.display === 'none') {
       newsBox.style.display = 'block';
@@ -376,7 +419,7 @@ function checkNewsTrigger() {
 function tick() {
   prevPrice = livePrice;
   
-  const isPumpActive = checkNewsTrigger();
+  const isPumpActive = handleNewsDisplay();
   
   if (isPumpActive) {
     livePrice = 13.43 + Math.random() * (14.64 - 13.43);
@@ -389,6 +432,10 @@ function tick() {
   drawChart();
 }
 
+// Initial Run setup based on current clock time
+if (isPumpActiveNow()) {
+  livePrice = 13.43 + Math.random() * (14.64 - 13.43);
+}
 seedCandles('1h');
 updateUI();
 drawChart();
