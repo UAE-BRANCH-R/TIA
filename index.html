@@ -1,3 +1,4 @@
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -10,16 +11,15 @@
   --mono:'Share Tech Mono',monospace;--ui:'Rajdhani',sans-serif;
 }
 html,body{background:var(--bg);color:var(--text);font-family:var(--ui);width:100%;overflow-x:hidden}
-.app{display:flex;flex-direction:column;width:100%;min-height:100vh}
+.app{display:flex;flex-direction:column;width:100%;min-height:100vh;background:var(--bg)}
 .topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .tb-left{display:flex;flex-direction:column;gap:1px}
-.tb-pair{font-size:16px;font-weight:600;letter-spacing:1px}
-.tb-price{font-family:var(--mono);font-size:22px;color:var(--green);transition:color 0.15s;font-weight:600}
-.tb-price.up{color:#00ff99}.tb-price.dn{color:#ff6080}
-.tb-chg{font-size:11px;font-family:var(--mono);margin-top:1px}
+.tb-pair{font-size:16px;font-weight:600;letter-spacing:1px;color:var(--text)}
+.tb-price{font-family:var(--mono);font-size:22px;color:var(--red);font-weight:600;transition:color 0.15s}
+.tb-price.flash-up{color:#00ff99}.tb-price.flash-dn{color:#ff6080}
+.tb-chg{font-size:11px;font-family:var(--mono);margin-top:1px;color:var(--red)}
 .tb-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .tb-badge-live{background:var(--blue-dim);color:var(--blue);font-size:9px;padding:2px 7px;border-radius:2px;font-family:var(--mono);border:1px solid var(--border2)}
-.tb-badge-vo{background:var(--gold);color:#1a1000;font-size:9px;padding:2px 7px;border-radius:2px;font-family:var(--mono);font-weight:700}
 .tb-stats{display:flex;gap:14px;margin-top:2px}
 .tb-stat{display:flex;flex-direction:column;align-items:flex-end;font-size:9px}
 .tb-slbl{color:var(--text3)}
@@ -38,8 +38,8 @@ canvas#cc{display:block;width:100%}
 .bc-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
 .bc-lbl{font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px}
 .bc-crypto{font-family:var(--mono);font-size:13px;color:var(--text2)}
-.bc-total{font-family:var(--mono);font-size:30px;color:var(--green);font-weight:600;transition:color 0.3s}
-.bc-total.pulse{color:#00ff99}
+.bc-total{font-family:var(--mono);font-size:30px;color:var(--red);font-weight:600;transition:color 0.3s}
+.bc-total.pulse{color:#ff6080}
 .bc-sub{font-family:var(--mono);font-size:11px;color:var(--text2);margin-top:2px}
 .serial-card{background:var(--bg2);margin:0 12px 10px;border-radius:6px;border:1px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
 .sc2-blk{display:flex;flex-direction:column;gap:3px}
@@ -65,15 +65,14 @@ canvas#cc{display:block;width:100%}
     <div class="tb-left">
       <div class="tb-pair">TIA / USDT</div>
       <div class="tb-price" id="tb-p">$7.53</div>
-      <div class="tb-chg" id="tb-chg" style="color:var(--red)">▼ -$1.00</div>
+      <div class="tb-chg" id="tb-chg">▼ -$0.87 (-11.06%)</div>
     </div>
     <div class="tb-right">
       <div style="display:flex;gap:6px">
         <span class="tb-badge-live">● LIVE</span>
-        <span class="tb-badge-vo">VIEW ONLY</span>
       </div>
       <div class="tb-stats">
-        <div class="tb-stat"><div class="tb-slbl">HIGH</div><div class="tb-sval" id="tb-hi">$7.98</div></div>
+        <div class="tb-stat"><div class="tb-slbl">HIGH</div><div class="tb-sval" id="tb-hi">$8.40</div></div>
         <div class="tb-stat"><div class="tb-slbl">LOW</div><div class="tb-sval" id="tb-lo">$7.31</div></div>
         <div class="tb-stat"><div class="tb-slbl">VOL</div><div class="tb-sval">2.84M</div></div>
       </div>
@@ -93,14 +92,8 @@ canvas#cc{display:block;width:100%}
 
   <div class="stats-row">
     <div class="stat-cell"><div class="sc-lbl">PRICE</div><div class="sc-val" id="st-p">$7.53</div></div>
-    <div class="stat-cell"><div class="sc-lbl">24H CHG</div><div class="sc-val" id="st-c" style="color:var(--red)">-11.73%</div></div>
+    <div class="stat-cell"><div class="sc-lbl">24H CHG</div><div class="sc-val" id="st-c" style="color:var(--red)">-11.06%</div></div>
     <div class="stat-cell"><div class="sc-lbl">MKT CAP</div><div class="sc-val" id="st-mc">$1.24B</div></div>
-  </div>
-
-  <!-- BUYING NEWS NOTIFICATION BOX -->
-  <div id="news-box" style="display:none; background: rgba(0, 230, 118, 0.1); margin: 10px 12px 0; border-radius: 6px; border: 1px dashed var(--green); padding: 10px 14px; font-family: var(--ui);">
-    <span style="color: var(--green); font-weight: bold; font-family: var(--mono); font-size: 11px;">[BREAKING NEWS]</span>
-    <p id="news-text" style="font-size: 13px; color: var(--text); margin-top: 2px; font-weight: 500;"></p>
   </div>
 
   <div class="balance-card">
@@ -120,12 +113,12 @@ canvas#cc{display:block;width:100%}
     <div class="sc2-div"></div>
     <div class="sc2-blk" style="align-items:flex-end">
       <div class="sc2-lbl">CURRENT SERIAL</div>
-      <div class="sc2-cur" id="cur-serial">64</div>
+      <div class="sc2-cur" id="cur-serial">—</div>
     </div>
   </div>
 
   <div class="ob-card">
-    <div class="ob-hdr"><span>ORDER BOOK</span><span style="color:var(--green)" id="ob-m">$7.5300</span></div>
+    <div class="ob-hdr"><span>ORDER BOOK</span><span id="ob-m" style="color:var(--red)">$7.5300</span></div>
     <div class="ob-cols">
       <div class="ob-col">
         <div class="ob-col-hdr"><span>SELL</span><span>SIZE</span></div>
@@ -141,14 +134,12 @@ canvas#cc{display:block;width:100%}
 
 <script>
 const HOLDINGS    = 286;
-const START_PRICE = 7.03;
-const DAILY_DROP  = 0.73;
 const DAY_ZERO    = new Date('2026-06-08T00:00:00Z');
 
-// Target news time: Today at 6:35 PM (18:35)
-const targetTime = new Date();
-targetTime.setHours(18, 35, 0, 0);
-const PUMP_START_TIMESTAMP = Math.floor(targetTime.getTime() / 1000);
+// Selling trend: start high, trend down over the day
+// High near open, low near current time
+const OPEN_PRICE  = 8.40;
+const CURR_PRICE  = 3.03;
 
 function makePRNG(seed) {
   let s = seed >>> 0;
@@ -163,21 +154,17 @@ function makePRNG(seed) {
 function getDayNum() {
   return Math.max(0, Math.floor((Date.now() - DAY_ZERO) / 86400000));
 }
-function getDayPrice(d) {
-  return Math.max(0.01, START_PRICE - d * DAILY_DROP);
-}
 
-const dayNum       = getDayNum();
-const dayBasePrice = getDayPrice(dayNum);
-document.getElementById('cur-serial').textContent = 1042 + dayNum * 89;
+const dayNum = getDayNum();
+document.getElementById('cur-serial').textContent = 1242 + dayNum * 89;
 
-let livePrice  = dayBasePrice;
-let prevPrice  = dayBasePrice;
+let livePrice  = CURR_PRICE + (Math.random() - 0.5) * 0.04;
+let prevPrice  = livePrice;
 let currentTF  = '1h';
 
 const candleData = [];
-const tfSecs  = {'15m':900, '1h':3600, '4h':14400, '1d':86400};
-const tfCount = {'15m':60,   '1h':48,    '4h':36,    '1d':24};
+const tfSecs  = {'15m':900,'1h':3600,'4h':14400,'1d':86400};
+const tfCount = {'15m':72,'1h':48,'4h':36,'1d':24};
 
 function tfHash(tf) {
   let h = 0;
@@ -185,18 +172,17 @@ function tfHash(tf) {
   return h;
 }
 
-// Check if news pump is currently active based on system time
-function isPumpActiveNow() {
-  return (Math.floor(Date.now() / 1000) >= PUMP_START_TIMESTAMP);
-}
-
-function getHistoricalPriceAtTime(timestamp, rng) {
-  // If this specific candle time is after 6:35 PM, it gets the pumped price range
-  if (timestamp >= PUMP_START_TIMESTAMP) {
-    return 13.43 + rng() * (14.64 - 13.43);
-  }
-  // Otherwise it gets the normal base price
-  return dayBasePrice;
+// Generate a downtrend price for a candle at position i of total n
+// With realistic forex-like waves (not straight line)
+function getTrendPrice(i, n, rng) {
+  const t = i / (n - 1); // 0 = oldest, 1 = newest (current)
+  // Base downtrend from OPEN to CURR
+  const base = OPEN_PRICE - t * (OPEN_PRICE - CURR_PRICE);
+  // Add sine wave for realistic oscillation (2-3 waves over the period)
+  const wave = Math.sin(t * Math.PI * 3.2) * 0.18;
+  // Small random noise
+  const noise = (rng() - 0.5) * 0.08;
+  return Math.max(0.01, base + wave + noise);
 }
 
 function seedCandles(tf) {
@@ -204,48 +190,42 @@ function seedCandles(tf) {
   const seed = (dayNum * 1000 + Math.abs(tfHash(tf))) >>> 0;
   const rng  = makePRNG(seed);
 
-  const s    = tfSecs[tf];
+  const s   = tfSecs[tf];
   const cnt = tfCount[tf];
-  
   const now = Math.floor(Date.now() / 1000);
   const slotNow = Math.floor(now / s) * s;
 
   for (let i = 0; i < cnt; i++) {
     const t = slotNow - (cnt - i) * s;
-    
-    // Get baseline price for this specific candle's timestamp
-    let baseVal = getHistoricalPriceAtTime(t, rng);
-    let prevBaseVal = getHistoricalPriceAtTime(t - s, rng);
+    const midP = getTrendPrice(i, cnt, rng);
+    const prevMid = i > 0 ? getTrendPrice(i-1, cnt, rng) : midP + 0.05;
 
-    let o, c, h, l;
+    // Bearish bias: open near prev close, close slightly lower
+    const bearBias = (rng() > 0.35) ? -1 : 1; // 65% bearish candles
+    const bodySize = rng() * 0.06 + 0.005;
+    let o = prevMid + (rng() - 0.5) * 0.03;
+    let c = o + bearBias * bodySize;
+    c = Math.max(0.01, c);
 
-    // Detect if this specific candle is the "News Trigger Candle" (crosses 6:35 PM)
-    if (t >= PUMP_START_TIMESTAMP && (t - s) < PUMP_START_TIMESTAMP) {
-      // Massive green breakout candle!
-      o = prevBaseVal + (rng() - 0.5) * 0.04;
-      c = baseVal;
-      h = Math.max(o, c) + rng() * 0.2;
-      l = Math.min(o, c) - rng() * 0.05;
-    } else {
-      // Normal candle behavior inside its respective range
-      const dir = rng() > 0.48 ? -1 : 1;
-      const body = rng() * (baseVal > 10 ? 0.15 : 0.04);
-      o = baseVal + (rng() - 0.5) * (baseVal > 10 ? 0.1 : 0.02);
-      c = Math.max(0.01, o + dir * body);
-      h = Math.max(o, c) + rng() * (baseVal > 10 ? 0.08 : 0.02);
-      l = Math.min(o, c) - rng() * (baseVal > 10 ? 0.08 : 0.02);
-      
-      // Keep boundaries forced within limits for visual clarity
-      if (baseVal > 10) {
-        if (c < 13.43) c = 13.43 + rng()*0.2;
-        if (c > 14.64) c = 14.64 - rng()*0.2;
-      }
-    }
+    // Wicks: bigger upper wick on bear candles (rejection of highs), small lower wick
+    const upperWick = bearBias < 0
+      ? rng() * 0.05 + 0.01   // bear: bigger upper wick (selling pressure)
+      : rng() * 0.02 + 0.005;
+    const lowerWick = bearBias < 0
+      ? rng() * 0.02 + 0.003  // bear: small lower wick
+      : rng() * 0.04 + 0.01;
+
+    let h = Math.max(o, c) + upperWick;
+    let l = Math.min(o, c) - lowerWick;
+
+    // Clamp to plausible range
+    h = Math.min(h, OPEN_PRICE + 0.3);
+    l = Math.max(l, CURR_PRICE - 0.4);
 
     candleData.push({t, o, h, l, c});
   }
 
-  // Sync last candle with the true dynamic live price
+  // Sync last candle with live price
   if (candleData.length) {
     const last = candleData[candleData.length - 1];
     last.c = livePrice;
@@ -260,7 +240,7 @@ function updateLastCandle(price) {
   const now  = Math.floor(Date.now() / 1000);
   if (now - last.t >= tfSecs[currentTF]) {
     candleData.push({t: now, o: last.c, h: price, l: price, c: price});
-    if (candleData.length > 80) candleData.shift();
+    if (candleData.length > 90) candleData.shift();
   } else {
     last.c = price;
     if (price > last.h) last.h = price;
@@ -272,51 +252,83 @@ function drawChart() {
   const canvas = document.getElementById('cc');
   const cw     = document.getElementById('cw');
   const W = cw.offsetWidth;
-  const H = Math.round(W * 0.58);
-  canvas.width = W; canvas.height = H; canvas.style.height = H + 'px';
+  const H = Math.round(W * 0.60);
+  canvas.width = W; canvas.height = H;
+  canvas.style.height = H + 'px';
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, W, H);
   if (candleData.length < 2) return;
 
-  const pL=46, pR=54, pT=12, pB=24;
+  const pL=52, pR=58, pT=14, pB=26;
   const cW2 = W - pL - pR, cH2 = H - pT - pB;
   const prices = candleData.flatMap(c => [c.h, c.l]);
   let minP = Math.min(...prices), maxP = Math.max(...prices);
-  const rng = maxP - minP, pad = rng * 0.1;
-  minP -= pad; maxP += pad;
+  const rng2 = maxP - minP, padV = rng2 * 0.12;
+  minP -= padV; maxP += padV;
   const pRng = maxP - minP;
   const toY  = p => pT + (1 - (p - minP) / pRng) * cH2;
   const n    = candleData.length;
   const slotW = cW2 / n;
-  const bW    = Math.max(1.5, slotW * 0.7);
+  const bW    = Math.max(1.5, slotW * 0.68);
 
-  ctx.strokeStyle = '#151e2a'; ctx.lineWidth = 0.5;
-  for (let i = 0; i <= 4; i++) {
-    const y  = pT + (cH2 / 4) * i;
-    const pv = maxP - (pRng / 4) * i;
+  // Background grid
+  ctx.strokeStyle = '#111820'; ctx.lineWidth = 0.5;
+  for (let i = 0; i <= 5; i++) {
+    const y  = pT + (cH2 / 5) * i;
+    const pv = maxP - (pRng / 5) * i;
     ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(pL + cW2, y); ctx.stroke();
     ctx.fillStyle = '#3a5570'; ctx.font = '9px Share Tech Mono,monospace';
-    ctx.textAlign = 'right'; ctx.fillText('$' + pv.toFixed(2), pL - 3, y + 3);
+    ctx.textAlign = 'right';
+    ctx.fillText('$' + pv.toFixed(2), pL - 4, y + 3);
   }
-  const step = Math.max(1, Math.floor(n / 5));
-  for (let i = 0; i < n; i += step) {
+
+  // Vertical grid lines
+  ctx.strokeStyle = '#0e1620'; ctx.lineWidth = 0.5;
+  const vStep = Math.max(1, Math.floor(n / 6));
+  for (let i = 0; i < n; i += vStep) {
+    const x = pL + i * slotW + slotW / 2;
+    ctx.beginPath(); ctx.moveTo(x, pT); ctx.lineTo(x, pT + cH2); ctx.stroke();
+  }
+
+  // X-axis labels
+  for (let i = 0; i < n; i += vStep) {
     const x = pL + i * slotW + slotW / 2;
     const d = new Date(candleData[i].t * 1000);
     const lbl = currentTF === '1d'
       ? (d.getMonth()+1) + '/' + d.getDate()
       : d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
     ctx.fillStyle = '#3a5570'; ctx.font = '8px Share Tech Mono,monospace';
-    ctx.textAlign = 'center'; ctx.fillText(lbl, x, pT + cH2 + 14);
+    ctx.textAlign = 'center';
+    ctx.fillText(lbl, x, pT + cH2 + 16);
   }
 
+  // EMA 20 (trend indicator - will slope down nicely)
+  if (n >= 20) {
+    const ema = [];
+    const k = 2 / (20 + 1);
+    let e = candleData[0].c;
+    for (let i = 0; i < n; i++) {
+      e = candleData[i].c * k + e * (1 - k);
+      if (i >= 19) ema.push({x: pL+(i+0.5)*slotW, y: toY(e)});
+    }
+    ctx.strokeStyle = 'rgba(255, 180, 0, 0.65)'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ema.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke();
+  }
+
+  // EMA 7
   if (n >= 7) {
-    const ma7 = [];
-    for (let i = 6; i < n; i++)
-      ma7.push({x: pL+(i+0.5)*slotW, y: toY(candleData.slice(i-6,i+1).reduce((s,c)=>s+c.c,0)/7)});
-    ctx.strokeStyle = 'rgba(255,214,0,0.5)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ma7.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke();
+    const ema7 = [];
+    const k = 2 / (7 + 1);
+    let e = candleData[0].c;
+    for (let i = 0; i < n; i++) {
+      e = candleData[i].c * k + e * (1 - k);
+      if (i >= 6) ema7.push({x: pL+(i+0.5)*slotW, y: toY(e)});
+    }
+    ctx.strokeStyle = 'rgba(100, 160, 255, 0.5)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ema7.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke();
   }
 
+  // Candles
   candleData.forEach((c, i) => {
     const x    = pL + i * slotW + slotW / 2;
     const isUp = c.c >= c.o;
@@ -324,53 +336,69 @@ function drawChart() {
     const bodyT = toY(Math.max(c.o, c.c));
     const bodyB = toY(Math.min(c.o, c.c));
     const bH    = Math.max(1, bodyB - bodyT);
+
+    // Wick
     ctx.strokeStyle = col; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x, toY(c.h)); ctx.lineTo(x, toY(c.l)); ctx.stroke();
-    ctx.fillStyle = isUp ? '#00e676' : 'rgba(255,61,87,0.2)';
-    ctx.fillRect(x - bW/2, bodyT, bW, bH);
-    ctx.strokeRect(x - bW/2, bodyT, bW, bH);
+
+    // Body
+    if (isUp) {
+      ctx.fillStyle = 'rgba(0,230,118,0.18)';
+      ctx.fillRect(x - bW/2, bodyT, bW, bH);
+      ctx.strokeStyle = '#00e676'; ctx.lineWidth = 0.8;
+      ctx.strokeRect(x - bW/2, bodyT, bW, bH);
+    } else {
+      ctx.fillStyle = '#ff3d57';
+      ctx.fillRect(x - bW/2, bodyT, bW, bH);
+    }
   });
 
+  // Live price dashed line
   const ly = toY(livePrice);
-  ctx.setLineDash([3,4]); ctx.strokeStyle='rgba(0,230,118,0.5)'; ctx.lineWidth=1;
+  ctx.setLineDash([3,4]); ctx.strokeStyle='rgba(255,61,87,0.55)'; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(pL,ly); ctx.lineTo(pL+cW2,ly); ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = '#00e676';
-  ctx.fillRect(pL+cW2+1, ly-8, pR-3, 16);
-  ctx.fillStyle = '#050f09'; ctx.font = 'bold 9px Share Tech Mono,monospace'; ctx.textAlign = 'center';
-  ctx.fillText('$'+livePrice.toFixed(2), pL+cW2+1+(pR-3)/2, ly+3);
+
+  // Live price label (right side)
+  ctx.fillStyle = '#ff3d57';
+  ctx.fillRect(pL+cW2+1, ly-9, pR-2, 18);
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Share Tech Mono,monospace'; ctx.textAlign = 'center';
+  ctx.fillText('$'+livePrice.toFixed(2), pL+cW2+1+(pR-2)/2, ly+3);
 }
 
 function updateUI() {
-  const p = livePrice, fmt = p.toFixed(2);
-  const isUp = p >= prevPrice;
+  const p = livePrice;
+  const fmt = p.toFixed(2);
+  const isDown = p < prevPrice;
+
   const tb = document.getElementById('tb-p');
   tb.textContent = '$' + fmt;
-  tb.className = 'tb-price ' + (isUp ? 'up' : 'dn');
-  setTimeout(() => tb.className = 'tb-price', 200);
+  tb.className = 'tb-price ' + (isDown ? 'flash-dn' : 'flash-up');
+  setTimeout(() => { tb.className = 'tb-price'; }, 200);
+
   document.getElementById('st-p').textContent = '$' + fmt;
-  const yestPrice = getDayPrice(Math.max(0, dayNum-1));
-  const chg = p - yestPrice, pct = (chg / yestPrice * 100).toFixed(2);
-  const chgTxt = (chg>=0?'▲ +':'▼ ') + '$' + Math.abs(chg).toFixed(2) + ' (' + pct + '%)';
+
+  const chg = p - OPEN_PRICE;
+  const pct = (chg / OPEN_PRICE * 100).toFixed(2);
+  const chgTxt = '▼ -$' + Math.abs(chg).toFixed(2) + ' (' + Math.abs(pct) + '%)';
   document.getElementById('tb-chg').textContent = chgTxt;
-  document.getElementById('tb-chg').style.color = chg>=0?'#00e676':'#ff3d57';
-  document.getElementById('st-c').textContent = (chg>=0?'+':'') + pct + '%';
-  document.getElementById('st-c').style.color  = chg>=0?'#00e676':'#ff3d57';
-  document.getElementById('tb-hi').textContent = '$' + (p+0.45).toFixed(2);
-  document.getElementById('tb-lo').textContent = '$' + Math.max(0.01, p-0.22).toFixed(2);
-  
-  const baseCap = 1.24; 
-  const dynamicCap = (baseCap * (p / dayBasePrice)).toFixed(2);
+  document.getElementById('st-c').textContent = pct + '%';
+  document.getElementById('st-c').style.color = '#ff3d57';
+
+  document.getElementById('tb-hi').textContent = '$' + OPEN_PRICE.toFixed(2);
+  document.getElementById('tb-lo').textContent = '$' + (CURR_PRICE - 0.12).toFixed(2);
+
+  const dynamicCap = (1.24 * (p / OPEN_PRICE)).toFixed(2);
   document.getElementById('st-mc').textContent = '$' + dynamicCap + 'B';
 
-  const total  = HOLDINGS * p;
-  const balEl  = document.getElementById('b-usd');
+  const total = HOLDINGS * p;
+  const balEl = document.getElementById('b-usd');
   balEl.textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   balEl.className = 'bc-total pulse';
-  setTimeout(() => balEl.className = 'bc-total', 300);
+  setTimeout(() => { balEl.className = 'bc-total'; }, 300);
   document.getElementById('b-sub').textContent = '@ $' + fmt + ' per TIA';
-  document.getElementById('ob-m').textContent  = '$' + p.toFixed(4);
-  document.getElementById('ob-m').style.color  = isUp ? '#00e676' : '#ff3d57';
+  document.getElementById('ob-m').textContent = '$' + p.toFixed(4);
+
   updateOB(p);
 }
 
@@ -394,48 +422,21 @@ window.switchTF = function(tf, btn) {
   currentTF = tf;
   document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
-  // Re-seed based on current actual time state
-  if (isPumpActiveNow()) {
-    livePrice = 13.43 + Math.random() * (14.64 - 13.43);
-  } else {
-    livePrice = dayBasePrice;
-  }
   seedCandles(tf);
   drawChart();
 };
 
-function handleNewsDisplay() {
-  if (isPumpActiveNow()) {
-    const newsBox = document.getElementById('news-box');
-    if (newsBox.style.display === 'none') {
-      newsBox.style.display = 'block';
-      document.getElementById('news-text').textContent = "Institutional Whale announces a massive $500M buy order for TIA.";
-    }
-    return true;
-  }
-  return false;
-}
-
 function tick() {
   prevPrice = livePrice;
-  
-  const isPumpActive = handleNewsDisplay();
-  
-  if (isPumpActive) {
-    livePrice = 13.43 + Math.random() * (14.64 - 13.43);
-  } else {
-    livePrice = Math.max(0.01, dayBasePrice + (Math.random()-0.5)*0.04);
-  }
-  
+  // Live price: slight downward drift with small noise (selling pressure)
+  const drift = -0.002; // slow downward drift
+  const noise = (Math.random() - 0.45) * 0.04; // slight bearish bias
+  livePrice = Math.max(CURR_PRICE - 0.5, livePrice + drift + noise);
   updateLastCandle(livePrice);
   updateUI();
   drawChart();
 }
 
-// Initial Run setup based on current clock time
-if (isPumpActiveNow()) {
-  livePrice = 13.43 + Math.random() * (14.64 - 13.43);
-}
 seedCandles('1h');
 updateUI();
 drawChart();
