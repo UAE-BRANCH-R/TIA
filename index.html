@@ -1,3 +1,4 @@
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -57,22 +58,50 @@ canvas#cc{display:block;width:100%}
 .ob-r.s .bg{background:var(--red)}.ob-r.b .bg{background:var(--green)}
 .ob-r.s .p{color:var(--red)}.ob-r.b .p{color:var(--green)}
 .ob-r .sz{color:var(--text3);font-size:9px}
+
+/* SELL PANEL */
+.sell-card{background:var(--bg2);margin:0 12px 12px;border-radius:6px;border:1px solid #3a1520;overflow:hidden}
+.sell-hdr{padding:8px 14px;background:rgba(255,61,87,0.08);border-bottom:1px solid #3a1520;display:flex;align-items:center;gap:8px}
+.sell-hdr-title{font-family:var(--mono);font-size:11px;color:var(--red);letter-spacing:2px;font-weight:600}
+.sell-hdr-live{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.sell-body{padding:14px}
+.sell-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sell-lbl{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;width:70px;flex-shrink:0}
+.sell-input{background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:14px;padding:7px 10px;border-radius:3px;flex:1;outline:none;transition:border-color 0.15s}
+.sell-input:focus{border-color:var(--red)}
+.sell-input.err{border-color:#ff6040}
+.sell-pct-row{display:flex;gap:5px;margin-bottom:12px}
+.sell-pct{background:var(--bg3);border:1px solid var(--border);color:var(--text3);font-family:var(--mono);font-size:10px;padding:5px 0;border-radius:2px;flex:1;cursor:pointer;text-align:center;transition:all 0.12s}
+.sell-pct:hover,.sell-pct.active{background:rgba(255,61,87,0.12);border-color:var(--red);color:var(--red)}
+.sell-summary{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:10px 12px;margin-bottom:12px}
+.sell-sum-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.sell-sum-row:last-child{margin-bottom:0;border-top:1px solid var(--border);padding-top:5px;margin-top:5px}
+.sell-sum-lbl{font-family:var(--mono);font-size:9px;color:var(--text3)}
+.sell-sum-val{font-family:var(--mono);font-size:10px;color:var(--text2)}
+.sell-sum-total{font-family:var(--mono);font-size:13px;color:var(--green);font-weight:600}
+.sell-err{font-family:var(--mono);font-size:9px;color:#ff6040;min-height:14px;margin-bottom:8px}
+.sell-btn{width:100%;padding:12px;background:var(--red);color:#fff;font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.15s,transform 0.1s}
+.sell-btn:hover{opacity:0.88}
+.sell-btn:active{transform:scale(0.98)}
+.sell-btn:disabled{opacity:0.35;cursor:not-allowed}
+.sell-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0d2b1a;border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:11px;padding:10px 20px;border-radius:4px;letter-spacing:1px;display:none;z-index:999;white-space:nowrap}
+.sell-toast.show{display:block}
 </style>
 
 <div class="app">
   <div class="topbar">
     <div class="tb-left">
       <div class="tb-pair">TIA / USDT</div>
-      <div class="tb-price" id="tb-p">$1.53</div>
-      <div class="tb-chg" id="tb-chg">▼ -$0.63 (-11.06%)</div>
+      <div class="tb-price" id="tb-p">$0.028</div>
+      <div class="tb-chg" id="tb-chg">▼ -$7.97 (-99.65%)</div>
     </div>
     <div class="tb-right">
       <div style="display:flex;gap:6px">
         <span class="tb-badge-live">● LIVE</span>
       </div>
       <div class="tb-stats">
-        <div class="tb-stat"><div class="tb-slbl">HIGH</div><div class="tb-sval" id="tb-hi">$8.40</div></div>
-        <div class="tb-stat"><div class="tb-slbl">LOW</div><div class="tb-sval" id="tb-lo">$7.31</div></div>
+        <div class="tb-stat"><div class="tb-slbl">HIGH</div><div class="tb-sval" id="tb-hi">$8.00</div></div>
+        <div class="tb-stat"><div class="tb-slbl">LOW</div><div class="tb-sval" id="tb-lo">$0.023</div></div>
         <div class="tb-stat"><div class="tb-slbl">VOL</div><div class="tb-sval">2.84M</div></div>
       </div>
     </div>
@@ -90,18 +119,18 @@ canvas#cc{display:block;width:100%}
   </div>
 
   <div class="stats-row">
-    <div class="stat-cell"><div class="sc-lbl">PRICE</div><div class="sc-val" id="st-p">$7.53</div></div>
-    <div class="stat-cell"><div class="sc-lbl">24H CHG</div><div class="sc-val" id="st-c" style="color:var(--red)">-11.06%</div></div>
-    <div class="stat-cell"><div class="sc-lbl">MKT CAP</div><div class="sc-val" id="st-mc">$1.24B</div></div>
+    <div class="stat-cell"><div class="sc-lbl">PRICE</div><div class="sc-val" id="st-p">$0.028</div></div>
+    <div class="stat-cell"><div class="sc-lbl">24H CHG</div><div class="sc-val" id="st-c" style="color:var(--red)">-99.65%</div></div>
+    <div class="stat-cell"><div class="sc-lbl">MKT CAP</div><div class="sc-val" id="st-mc">$4.35M</div></div>
   </div>
 
   <div class="balance-card">
     <div class="bc-row">
       <div class="bc-lbl">PORTFOLIO VALUE</div>
-      <div class="bc-crypto">286 TIA</div>
+      <div class="bc-crypto" id="b-hold">286 TIA</div>
     </div>
-    <div class="bc-total" id="b-usd">$2,153.58</div>
-    <div class="bc-sub" id="b-sub">@ $7.53 per TIA</div>
+    <div class="bc-total" id="b-usd">$8.01</div>
+    <div class="bc-sub" id="b-sub">@ $0.028 per TIA</div>
   </div>
 
   <div class="serial-card">
@@ -116,8 +145,51 @@ canvas#cc{display:block;width:100%}
     </div>
   </div>
 
+  <!-- SELL PANEL -->
+  <div class="sell-card">
+    <div class="sell-hdr">
+      <span style="color:var(--red);font-size:14px">▼</span>
+      <span class="sell-hdr-title">SELL TIA</span>
+      <span class="sell-hdr-live" id="sell-live-p">@ $0.028</span>
+    </div>
+    <div class="sell-body">
+      <div class="sell-row">
+        <span class="sell-lbl">AMOUNT</span>
+        <input class="sell-input" type="number" id="sell-qty" placeholder="Min 10 TIA" min="10" step="1" oninput="onQtyInput()"/>
+      </div>
+      <div class="sell-pct-row">
+        <div class="sell-pct" onclick="setPct(25)">25%</div>
+        <div class="sell-pct" onclick="setPct(50)">50%</div>
+        <div class="sell-pct" onclick="setPct(75)">75%</div>
+        <div class="sell-pct" onclick="setPct(100)">MAX</div>
+      </div>
+
+      <div class="sell-summary">
+        <div class="sell-sum-row">
+          <span class="sell-sum-lbl">AMOUNT</span>
+          <span class="sell-sum-val" id="sum-qty">— TIA</span>
+        </div>
+        <div class="sell-sum-row">
+          <span class="sell-sum-lbl">PRICE PER TIA</span>
+          <span class="sell-sum-val" id="sum-price">$—</span>
+        </div>
+        <div class="sell-sum-row">
+          <span class="sell-sum-lbl">FEE (0.1%)</span>
+          <span class="sell-sum-val" id="sum-fee">$—</span>
+        </div>
+        <div class="sell-sum-row">
+          <span class="sell-sum-lbl">YOU RECEIVE</span>
+          <span class="sell-sum-total" id="sum-total">$—</span>
+        </div>
+      </div>
+
+      <div class="sell-err" id="sell-err"></div>
+      <button class="sell-btn" id="sell-btn" onclick="doSell()" disabled>SELL TIA</button>
+    </div>
+  </div>
+
   <div class="ob-card">
-    <div class="ob-hdr"><span>ORDER BOOK</span><span id="ob-m" style="color:var(--red)">$7.5300</span></div>
+    <div class="ob-hdr"><span>ORDER BOOK</span><span id="ob-m" style="color:var(--red)">$0.0280</span></div>
     <div class="ob-cols">
       <div class="ob-col">
         <div class="ob-col-hdr"><span>SELL</span><span>SIZE</span></div>
@@ -131,14 +203,18 @@ canvas#cc{display:block;width:100%}
   </div>
 </div>
 
-<script>
-const HOLDINGS    = 286;
-const DAY_ZERO    = new Date('2026-06-08T00:00:00Z');
+<div class="sell-toast" id="sell-toast"></div>
 
-// Selling trend: start high, trend down over the day
-// High near open, low near current time
-const OPEN_PRICE  = 8.0;
-const CURR_PRICE  =0.03;
+<script>
+const HOLDINGS_START = 286;
+const DAY_ZERO = new Date('2026-06-08T00:00:00Z');
+const OPEN_PRICE = 8.0;
+const CURR_PRICE = 0.028;
+
+let holdings = HOLDINGS_START;
+let livePrice = 0.023 + Math.random() * (0.032 - 0.023);
+let prevPrice = livePrice;
+let currentTF = '1h';
 
 function makePRNG(seed) {
   let s = seed >>> 0;
@@ -155,15 +231,10 @@ function getDayNum() {
 }
 
 const dayNum = getDayNum();
-document.getElementById('cur-serial').textContent = 1442 + dayNum * 89;
-
-// 0.023 এবং 0.032 এর মধ্যে লিমিট করা হলো শুরুর প্রাইস
-let livePrice  = 0.023 + Math.random() * (0.032 - 0.023);
-let prevPrice  = livePrice;
-let currentTF  = '1h';
+document.getElementById('cur-serial').textContent = 1542 + dayNum * 189;
 
 const candleData = [];
-const tfSecs   = {'15m':900,'1h':3600,'4h':14400,'1d':86400};
+const tfSecs = {'15m':900,'1h':3600,'4h':14400,'1d':86400};
 const tfCount = {'15m':72,'1h':48,'4h':36,'1d':24};
 
 function tfHash(tf) {
@@ -172,15 +243,10 @@ function tfHash(tf) {
   return h;
 }
 
-// Generate a downtrend price for a candle at position i of total n
-// With realistic forex-like waves (not straight line)
 function getTrendPrice(i, n, rng) {
-  const t = i / (n - 1); // 0 = oldest, 1 = newest (current)
-  // Base downtrend from OPEN to CURR
+  const t = i / (n - 1);
   const base = OPEN_PRICE - t * (OPEN_PRICE - CURR_PRICE);
-  // Add sine wave for realistic oscillation (2-3 waves over the period)
   const wave = Math.sin(t * Math.PI * 3.2) * 0.18;
-  // Small random noise
   const noise = (rng() - 0.5) * 0.08;
   return Math.max(0.01, base + wave + noise);
 }
@@ -188,44 +254,30 @@ function getTrendPrice(i, n, rng) {
 function seedCandles(tf) {
   candleData.length = 0;
   const seed = (dayNum * 1000 + Math.abs(tfHash(tf))) >>> 0;
-  const rng  = makePRNG(seed);
-
-  const s   = tfSecs[tf];
+  const rng = makePRNG(seed);
+  const s = tfSecs[tf];
   const cnt = tfCount[tf];
   const now = Math.floor(Date.now() / 1000);
   const slotNow = Math.floor(now / s) * s;
 
   for (let i = 0; i < cnt; i++) {
-    const t = slotNow - (cnt - i) * s;
+    const t2 = slotNow - (cnt - i) * s;
     const midP = getTrendPrice(i, cnt, rng);
     const prevMid = i > 0 ? getTrendPrice(i-1, cnt, rng) : midP + 0.05;
-
-    // Bearish bias: open near prev close, close slightly lower
-    const bearBias = (rng() > 0.35) ? -1 : 1; // 65% bearish candles
+    const bearBias = (rng() > 0.35) ? -1 : 1;
     const bodySize = rng() * 0.06 + 0.005;
     let o = prevMid + (rng() - 0.5) * 0.03;
     let c = o + bearBias * bodySize;
     c = Math.max(0.01, c);
-
-    // Wicks: bigger upper wick on bear candles (rejection of highs), small lower wick
-    const upperWick = bearBias < 0
-      ? rng() * 0.05 + 0.01   // bear: bigger upper wick (selling pressure)
-      : rng() * 0.02 + 0.005;
-    const lowerWick = bearBias < 0
-      ? rng() * 0.02 + 0.003  // bear: small lower wick
-      : rng() * 0.04 + 0.01;
-
+    const upperWick = bearBias < 0 ? rng() * 0.05 + 0.01 : rng() * 0.02 + 0.005;
+    const lowerWick = bearBias < 0 ? rng() * 0.02 + 0.003 : rng() * 0.04 + 0.01;
     let h = Math.max(o, c) + upperWick;
-    let l = Math.min(o, c) - lowerWick;
-
-    // Clamp to plausible range
+    let l2 = Math.min(o, c) - lowerWick;
     h = Math.min(h, OPEN_PRICE + 0.3);
-    l = Math.max(l, CURR_PRICE - 0.4);
-
-    candleData.push({t, o, h, l, c});
+    l2 = Math.max(l2, CURR_PRICE - 0.4);
+    candleData.push({t: t2, o, h, l: l2, c});
   }
 
-  // Sync last candle with live price
   if (candleData.length) {
     const last = candleData[candleData.length - 1];
     last.c = livePrice;
@@ -237,7 +289,7 @@ function seedCandles(tf) {
 function updateLastCandle(price) {
   if (!candleData.length) return;
   const last = candleData[candleData.length - 1];
-  const now  = Math.floor(Date.now() / 1000);
+  const now = Math.floor(Date.now() / 1000);
   if (now - last.t >= tfSecs[currentTF]) {
     candleData.push({t: now, o: last.c, h: price, l: price, c: price});
     if (candleData.length > 90) candleData.shift();
@@ -250,8 +302,8 @@ function updateLastCandle(price) {
 
 function drawChart() {
   const canvas = document.getElementById('cc');
-  const cw     = document.getElementById('cw');
-  const W = cw.offsetWidth;
+  const cw2 = document.getElementById('cw');
+  const W = cw2.offsetWidth;
   const H = Math.round(W * 0.60);
   canvas.width = W; canvas.height = H;
   canvas.style.height = H + 'px';
@@ -260,29 +312,27 @@ function drawChart() {
   if (candleData.length < 2) return;
 
   const pL=52, pR=58, pT=14, pB=26;
-  const cW2 = W - pL - pR, cH2 = H - pT - pB;
+  const cW3 = W - pL - pR, cH2 = H - pT - pB;
   const prices = candleData.flatMap(c => [c.h, c.l]);
   let minP = Math.min(...prices), maxP = Math.max(...prices);
   const rng2 = maxP - minP, padV = rng2 * 0.12;
   minP -= padV; maxP += padV;
   const pRng = maxP - minP;
-  const toY  = p => pT + (1 - (p - minP) / pRng) * cH2;
-  const n    = candleData.length;
-  const slotW = cW2 / n;
-  const bW    = Math.max(1.5, slotW * 0.68);
+  const toY = p => pT + (1 - (p - minP) / pRng) * cH2;
+  const n = candleData.length;
+  const slotW = cW3 / n;
+  const bW = Math.max(1.5, slotW * 0.68);
 
-  // Background grid
   ctx.strokeStyle = '#111820'; ctx.lineWidth = 0.5;
   for (let i = 0; i <= 5; i++) {
-    const y  = pT + (cH2 / 5) * i;
+    const y = pT + (cH2 / 5) * i;
     const pv = maxP - (pRng / 5) * i;
-    ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(pL + cW2, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(pL + cW3, y); ctx.stroke();
     ctx.fillStyle = '#3a5570'; ctx.font = '9px Share Tech Mono,monospace';
     ctx.textAlign = 'right';
-    ctx.fillText('$' + pv.toFixed(2), pL - 4, y + 3);
+    ctx.fillText('$' + pv.toFixed(3), pL - 4, y + 3);
   }
 
-  // Vertical grid lines
   ctx.strokeStyle = '#0e1620'; ctx.lineWidth = 0.5;
   const vStep = Math.max(1, Math.floor(n / 6));
   for (let i = 0; i < n; i += vStep) {
@@ -290,7 +340,6 @@ function drawChart() {
     ctx.beginPath(); ctx.moveTo(x, pT); ctx.lineTo(x, pT + cH2); ctx.stroke();
   }
 
-  // X-axis labels
   for (let i = 0; i < n; i += vStep) {
     const x = pL + i * slotW + slotW / 2;
     const d = new Date(candleData[i].t * 1000);
@@ -302,7 +351,6 @@ function drawChart() {
     ctx.fillText(lbl, x, pT + cH2 + 16);
   }
 
-  // EMA 20 (trend indicator - will slope down nicely)
   if (n >= 20) {
     const ema = [];
     const k = 2 / (20 + 1);
@@ -315,7 +363,6 @@ function drawChart() {
     ctx.beginPath(); ema.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke();
   }
 
-  // EMA 7
   if (n >= 7) {
     const ema7 = [];
     const k = 2 / (7 + 1);
@@ -328,94 +375,180 @@ function drawChart() {
     ctx.beginPath(); ema7.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke();
   }
 
-  // Candles
   candleData.forEach((c, i) => {
-    const x    = pL + i * slotW + slotW / 2;
+    const x = pL + i * slotW + slotW / 2;
     const isUp = c.c >= c.o;
-    const col  = isUp ? '#00e676' : '#ff3d57';
+    const col = isUp ? '#00e676' : '#ff3d57';
     const bodyT = toY(Math.max(c.o, c.c));
     const bodyB = toY(Math.min(c.o, c.c));
-    const bH    = Math.max(1, bodyB - bodyT);
-
-    // Wick
+    const bH2 = Math.max(1, bodyB - bodyT);
     ctx.strokeStyle = col; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x, toY(c.h)); ctx.lineTo(x, toY(c.l)); ctx.stroke();
-
-    // Body
     if (isUp) {
       ctx.fillStyle = 'rgba(0,230,118,0.18)';
-      ctx.fillRect(x - bW/2, bodyT, bW, bH);
+      ctx.fillRect(x - bW/2, bodyT, bW, bH2);
       ctx.strokeStyle = '#00e676'; ctx.lineWidth = 0.8;
-      ctx.strokeRect(x - bW/2, bodyT, bW, bH);
+      ctx.strokeRect(x - bW/2, bodyT, bW, bH2);
     } else {
       ctx.fillStyle = '#ff3d57';
-      ctx.fillRect(x - bW/2, bodyT, bW, bH);
+      ctx.fillRect(x - bW/2, bodyT, bW, bH2);
     }
   });
 
-  // Live price dashed line
   const ly = toY(livePrice);
   ctx.setLineDash([3,4]); ctx.strokeStyle='rgba(255,61,87,0.55)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(pL,ly); ctx.lineTo(pL+cW2,ly); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(pL,ly); ctx.lineTo(pL+cW3,ly); ctx.stroke();
   ctx.setLineDash([]);
-
-  // Live price label (right side)
   ctx.fillStyle = '#ff3d57';
-  ctx.fillRect(pL+cW2+1, ly-9, pR-2, 18);
+  ctx.fillRect(pL+cW3+1, ly-9, pR-2, 18);
   ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Share Tech Mono,monospace'; ctx.textAlign = 'center';
-  ctx.fillText('$'+livePrice.toFixed(2), pL+cW2+1+(pR-2)/2, ly+3);
-}
-
-function updateUI() {
-  const p = livePrice;
-  const fmt = p.toFixed(2);
-  const isDown = p < prevPrice;
-
-  const tb = document.getElementById('tb-p');
-  tb.textContent = '$' + fmt;
-  tb.className = 'tb-price ' + (isDown ? 'flash-dn' : 'flash-up');
-  setTimeout(() => { tb.className = 'tb-price'; }, 200);
-
-  document.getElementById('st-p').textContent = '$' + fmt;
-
-  const chg = p - OPEN_PRICE;
-  const pct = (chg / OPEN_PRICE * 100).toFixed(2);
-  const chgTxt = '▼ -$' + Math.abs(chg).toFixed(2) + ' (' + Math.abs(pct) + '%)';
-  document.getElementById('tb-chg').textContent = chgTxt;
-  document.getElementById('st-c').textContent = pct + '%';
-  document.getElementById('st-c').style.color = '#ff3d57';
-
-  document.getElementById('tb-hi').textContent = '$' + OPEN_PRICE.toFixed(2);
-  document.getElementById('tb-lo').textContent = '$' + (CURR_PRICE - 0.12).toFixed(2);
-
-  const dynamicCap = (1.24 * (p / OPEN_PRICE)).toFixed(2);
-  document.getElementById('st-mc').textContent = '$' + dynamicCap + 'B';
-
-  const total = HOLDINGS * p;
-  const balEl = document.getElementById('b-usd');
-  balEl.textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  balEl.className = 'bc-total pulse';
-  setTimeout(() => { balEl.className = 'bc-total'; }, 300);
-  document.getElementById('b-sub').textContent = '@ $' + fmt + ' per TIA';
-  document.getElementById('ob-m').textContent = '$' + p.toFixed(4);
-
-  updateOB(p);
+  ctx.fillText('$'+livePrice.toFixed(3), pL+cW3+1+(pR-2)/2, ly+3);
 }
 
 function updateOB(mid) {
   const rowsS=[], rowsB=[];
   for (let i=6; i>=1; i--) {
     const off = i*(0.003+Math.random()*0.005);
-    const sz  = (Math.random()*8000+500).toFixed(0);
-    rowsS.push({p:(mid+off).toFixed(3), sz:Number(sz).toLocaleString(), w:(+sz/8500*100).toFixed(0)});
+    const sz = (Math.random()*8000+500).toFixed(0);
+    rowsS.push({p:(mid+off).toFixed(4), sz:Number(sz).toLocaleString(), w:(+sz/8500*100).toFixed(0)});
   }
   for (let i=1; i<=6; i++) {
     const off = i*(0.003+Math.random()*0.005);
-    const sz  = (Math.random()*8000+500).toFixed(0);
-    rowsB.push({p:(mid-off).toFixed(3), sz:Number(sz).toLocaleString(), w:(+sz/8500*100).toFixed(0)});
+    const sz = (Math.random()*8000+500).toFixed(0);
+    rowsB.push({p:(mid-off).toFixed(4), sz:Number(sz).toLocaleString(), w:(+sz/8500*100).toFixed(0)});
   }
   document.getElementById('ob-s').innerHTML = rowsS.map(r=>`<div class="ob-r s"><div class="bg" style="width:${r.w}%"></div><span class="p">${r.p}</span><span class="sz">${r.sz}</span></div>`).join('');
   document.getElementById('ob-b').innerHTML = rowsB.map(r=>`<div class="ob-r b"><div class="bg" style="width:${r.w}%"></div><span class="p">${r.p}</span><span class="sz">${r.sz}</span></div>`).join('');
+}
+
+function updateUI() {
+  const p = livePrice;
+  const fmt = p.toFixed(4);
+  const isDown = p < prevPrice;
+
+  const tb = document.getElementById('tb-p');
+  tb.textContent = '$' + p.toFixed(4);
+  tb.className = 'tb-price ' + (isDown ? 'flash-dn' : 'flash-up');
+  setTimeout(() => { tb.className = 'tb-price'; }, 200);
+
+  document.getElementById('st-p').textContent = '$' + p.toFixed(4);
+  document.getElementById('sell-live-p').textContent = '@ $' + p.toFixed(4);
+  document.getElementById('ob-m').textContent = '$' + p.toFixed(4);
+
+  const chg = p - OPEN_PRICE;
+  const pct = (chg / OPEN_PRICE * 100).toFixed(2);
+  document.getElementById('tb-chg').textContent = '▼ -$' + Math.abs(chg).toFixed(4) + ' (' + Math.abs(pct) + '%)';
+  document.getElementById('st-c').textContent = pct + '%';
+
+  document.getElementById('tb-hi').textContent = '$' + OPEN_PRICE.toFixed(2);
+  document.getElementById('tb-lo').textContent = '$0.023';
+
+  const dynamicCap = (1.24 * (p / OPEN_PRICE)).toFixed(4);
+  document.getElementById('st-mc').textContent = '$' + dynamicCap + 'B';
+
+  const total = holdings * p;
+  const balEl = document.getElementById('b-usd');
+  balEl.textContent = '$' + total.toLocaleString('en-US',{minimumFractionDigits:4,maximumFractionDigits:4});
+  balEl.className = 'bc-total pulse';
+  setTimeout(() => { balEl.className = 'bc-total'; }, 300);
+  document.getElementById('b-sub').textContent = '@ $' + p.toFixed(4) + ' per TIA';
+  document.getElementById('b-hold').textContent = holdings.toFixed(2) + ' TIA';
+
+  updateOB(p);
+  updateSellCalc();
+}
+
+function onQtyInput() {
+  document.querySelectorAll('.sell-pct').forEach(b => b.classList.remove('active'));
+  updateSellCalc();
+}
+
+function setPct(pct) {
+  document.querySelectorAll('.sell-pct').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  const qty = Math.floor(holdings * pct / 100);
+  document.getElementById('sell-qty').value = qty;
+  updateSellCalc();
+}
+
+function updateSellCalc() {
+  const qtyEl = document.getElementById('sell-qty');
+  const errEl = document.getElementById('sell-err');
+  const btn = document.getElementById('sell-btn');
+  const qty = parseFloat(qtyEl.value) || 0;
+  const p = livePrice;
+
+  document.getElementById('sum-price').textContent = '$' + p.toFixed(4);
+
+  if (!qtyEl.value || qty === 0) {
+    document.getElementById('sum-qty').textContent = '— TIA';
+    document.getElementById('sum-fee').textContent = '$—';
+    document.getElementById('sum-total').textContent = '$—';
+    errEl.textContent = '';
+    btn.disabled = true;
+    qtyEl.classList.remove('err');
+    return;
+  }
+
+  if (qty < 10) {
+    errEl.textContent = '✗ মিনিমাম ১০ TIA বিক্রি করতে হবে';
+    document.getElementById('sum-qty').textContent = qty + ' TIA';
+    document.getElementById('sum-fee').textContent = '$—';
+    document.getElementById('sum-total').textContent = '$—';
+    btn.disabled = true;
+    qtyEl.classList.add('err');
+    return;
+  }
+
+  if (qty > holdings) {
+    errEl.textContent = '✗ যথেষ্ট TIA নেই (সর্বোচ্চ ' + holdings.toFixed(2) + ' TIA)';
+    document.getElementById('sum-qty').textContent = qty + ' TIA';
+    document.getElementById('sum-fee').textContent = '$—';
+    document.getElementById('sum-total').textContent = '$—';
+    btn.disabled = true;
+    qtyEl.classList.add('err');
+    return;
+  }
+
+  if (!Number.isInteger(qty)) {
+    errEl.textContent = '✗ পূর্ণ সংখ্যা দিন';
+    btn.disabled = true;
+    qtyEl.classList.add('err');
+    return;
+  }
+
+  const gross = qty * p;
+  const fee = gross * 0.001;
+  const net = gross - fee;
+
+  document.getElementById('sum-qty').textContent = qty + ' TIA';
+  document.getElementById('sum-fee').textContent = '$' + fee.toFixed(6);
+  document.getElementById('sum-total').textContent = '$' + net.toFixed(6);
+  errEl.textContent = '';
+  btn.disabled = false;
+  qtyEl.classList.remove('err');
+}
+
+function doSell() {
+  const qty = parseInt(document.getElementById('sell-qty').value);
+  if (!qty || qty < 10 || qty > holdings) return;
+
+  const p = livePrice;
+  const gross = qty * p;
+  const fee = gross * 0.001;
+  const net = gross - fee;
+
+  holdings -= qty;
+  document.getElementById('sell-qty').value = '';
+  document.querySelectorAll('.sell-pct').forEach(b => b.classList.remove('active'));
+
+  const toast = document.getElementById('sell-toast');
+  toast.textContent = '✓ SOLD ' + qty + ' TIA @ $' + p.toFixed(4) + ' → $' + net.toFixed(4);
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+
+  updateSellCalc();
+  updateUI();
 }
 
 window.switchTF = function(tf, btn) {
@@ -428,15 +561,10 @@ window.switchTF = function(tf, btn) {
 
 function tick() {
   prevPrice = livePrice;
-  
-  // ০.০০১ রেঞ্জের মধ্যে র্যান্ডম ওঠানামা করার লজিক
-  const noise = (Math.random() - 0.5) * 0.002; 
+  const noise = (Math.random() - 0.5) * 0.002;
   let nextPrice = livePrice + noise;
-  
-  // প্রাইস যাতে strictly ০.০২৩ এবং ০.০৩২ এর ভেতরেই বাউন্ডেড থাকে
   if (nextPrice < 0.023) nextPrice = 0.023;
   if (nextPrice > 0.032) nextPrice = 0.032;
-  
   livePrice = nextPrice;
   updateLastCandle(livePrice);
   updateUI();
