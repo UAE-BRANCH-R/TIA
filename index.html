@@ -1,4 +1,9 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIA / USDT Trading Panel</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -87,13 +92,15 @@ canvas#cc{display:block;width:100%}
 .sell-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0d2b1a;border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:11px;padding:10px 20px;border-radius:4px;letter-spacing:1px;display:none;z-index:999;white-space:nowrap}
 .sell-toast.show{display:block}
 </style>
+</head>
+<body>
 
 <div class="app">
   <div class="topbar">
     <div class="tb-left">
       <div class="tb-pair">TIA / USDT</div>
-      <div class="tb-price" id="tb-p">$0.028</div>
-      <div class="tb-chg" id="tb-chg">▼ -$7.97 (-99.65%)</div>
+      <div class="tb-price" id="tb-p">$0.0025</div>
+      <div class="tb-chg" id="tb-chg">▼ -$7.9975 (-99.97%)</div>
     </div>
     <div class="tb-right">
       <div style="display:flex;gap:6px">
@@ -101,7 +108,7 @@ canvas#cc{display:block;width:100%}
       </div>
       <div class="tb-stats">
         <div class="tb-stat"><div class="tb-slbl">HIGH</div><div class="tb-sval" id="tb-hi">$8.00</div></div>
-        <div class="tb-stat"><div class="tb-slbl">LOW</div><div class="tb-sval" id="tb-lo">$0.023</div></div>
+        <div class="tb-stat"><div class="tb-slbl">LOW</div><div class="tb-sval" id="tb-lo">$0.0020</div></div>
         <div class="tb-stat"><div class="tb-slbl">VOL</div><div class="tb-sval">2.84M</div></div>
       </div>
     </div>
@@ -119,8 +126,8 @@ canvas#cc{display:block;width:100%}
   </div>
 
   <div class="stats-row">
-    <div class="stat-cell"><div class="sc-lbl">PRICE</div><div class="sc-val" id="st-p">$0.028</div></div>
-    <div class="stat-cell"><div class="sc-lbl">24H CHG</div><div class="sc-val" id="st-c" style="color:var(--red)">-99.65%</div></div>
+    <div class="stat-cell"><div class="sc-lbl">PRICE</div><div class="sc-val" id="st-p">$0.0025</div></div>
+    <div class="stat-cell"><div class="sc-lbl">24H CHG</div><div class="sc-val" id="st-c" style="color:var(--red)">-99.97%</div></div>
     <div class="stat-cell"><div class="sc-lbl">MKT CAP</div><div class="sc-val" id="st-mc">$4.35M</div></div>
   </div>
 
@@ -129,8 +136,8 @@ canvas#cc{display:block;width:100%}
       <div class="bc-lbl">PORTFOLIO VALUE</div>
       <div class="bc-crypto" id="b-hold">286 TIA</div>
     </div>
-    <div class="bc-total" id="b-usd">$8.01</div>
-    <div class="bc-sub" id="b-sub">@ $0.028 per TIA</div>
+    <div class="bc-total" id="b-usd">$0.7150</div>
+    <div class="bc-sub" id="b-sub">@ $0.0025 per TIA</div>
   </div>
 
   <div class="serial-card">
@@ -150,7 +157,7 @@ canvas#cc{display:block;width:100%}
     <div class="sell-hdr">
       <span style="color:var(--red);font-size:14px">▼</span>
       <span class="sell-hdr-title">SELL TIA</span>
-      <span class="sell-hdr-live" id="sell-live-p">@ $0.028</span>
+      <span class="sell-hdr-live" id="sell-live-p">@ $0.0025</span>
     </div>
     <div class="sell-body">
       <div class="sell-row">
@@ -189,7 +196,7 @@ canvas#cc{display:block;width:100%}
   </div>
 
   <div class="ob-card">
-    <div class="ob-hdr"><span>ORDER BOOK</span><span id="ob-m" style="color:var(--red)">$0.0280</span></div>
+    <div class="ob-hdr"><span>ORDER BOOK</span><span id="ob-m" style="color:var(--red)">$0.0025</span></div>
     <div class="ob-cols">
       <div class="ob-col">
         <div class="ob-col-hdr"><span>SELL</span><span>SIZE</span></div>
@@ -209,10 +216,10 @@ canvas#cc{display:block;width:100%}
 const HOLDINGS_START = 286;
 const DAY_ZERO = new Date('2026-06-08T00:00:00Z');
 const OPEN_PRICE = 8.0;
-const CURR_PRICE = 0.028;
+const CURR_PRICE = 0.0025; 
 
 let holdings = HOLDINGS_START;
-let livePrice = 0.023 + Math.random() * (0.032 - 0.023);
+let livePrice = 0.0022 + Math.random() * (0.0028 - 0.0022); 
 let prevPrice = livePrice;
 let currentTF = '1h';
 
@@ -243,12 +250,12 @@ function tfHash(tf) {
   return h;
 }
 
+// চার্টের ডাউনট্রেন্ড ক্যান্ডেলস্টিক ম্যাথমেটিক্যাল জেনারেশন ফিক্স করা হলো
 function getTrendPrice(i, n, rng) {
   const t = i / (n - 1);
-  const base = OPEN_PRICE - t * (OPEN_PRICE - CURR_PRICE);
-  const wave = Math.sin(t * Math.PI * 3.2) * 0.18;
-  const noise = (rng() - 0.5) * 0.08;
-  return Math.max(0.01, base + wave + noise);
+  const base = 0.0029 - t * 0.0004; // সর্বোচ্চ রেঞ্জ থেকে শুরু হয়ে ডাউনট্রেন্ড মেইনটেইন করবে
+  const noise = (rng() - 0.5) * 0.0002;
+  return Math.max(0.0020, Math.min(0.0030, base + noise));
 }
 
 function seedCandles(tf) {
@@ -263,18 +270,21 @@ function seedCandles(tf) {
   for (let i = 0; i < cnt; i++) {
     const t2 = slotNow - (cnt - i) * s;
     const midP = getTrendPrice(i, cnt, rng);
-    const prevMid = i > 0 ? getTrendPrice(i-1, cnt, rng) : midP + 0.05;
-    const bearBias = (rng() > 0.35) ? -1 : 1;
-    const bodySize = rng() * 0.06 + 0.005;
-    let o = prevMid + (rng() - 0.5) * 0.03;
-    let c = o + bearBias * bodySize;
-    c = Math.max(0.01, c);
-    const upperWick = bearBias < 0 ? rng() * 0.05 + 0.01 : rng() * 0.02 + 0.005;
-    const lowerWick = bearBias < 0 ? rng() * 0.02 + 0.003 : rng() * 0.04 + 0.01;
-    let h = Math.max(o, c) + upperWick;
-    let l2 = Math.min(o, c) - lowerWick;
-    h = Math.min(h, OPEN_PRICE + 0.3);
-    l2 = Math.max(l2, CURR_PRICE - 0.4);
+    const prevMid = i > 0 ? candleData[i-1].c : midP + 0.0001;
+    
+    let o = prevMid;
+    let c = midP;
+    
+    // বডি এবং উইক রেঞ্জ ডেসিমাল স্কেলিং ঠিক করা হলো
+    const highWick = rng() * 0.0001;
+    const lowWick = rng() * 0.0001;
+    
+    let h = Math.max(o, c) + highWick;
+    let l2 = Math.min(o, c) - lowWick;
+    
+    h = Math.min(h, 0.0030);
+    l2 = Math.max(l2, 0.0020);
+    
     candleData.push({t: t2, o, h, l: l2, c});
   }
 
@@ -313,10 +323,9 @@ function drawChart() {
 
   const pL=52, pR=58, pT=14, pB=26;
   const cW3 = W - pL - pR, cH2 = H - pT - pB;
-  const prices = candleData.flatMap(c => [c.h, c.l]);
-  let minP = Math.min(...prices), maxP = Math.max(...prices);
-  const rng2 = maxP - minP, padV = rng2 * 0.12;
-  minP -= padV; maxP += padV;
+  
+  // চার্ট অ্যাক্সিস রেঞ্জ ০.০০২০ থেকে ০.০০৩০ লক করা হলো
+  let minP = 0.0020, maxP = 0.0030;
   const pRng = maxP - minP;
   const toY = p => pT + (1 - (p - minP) / pRng) * cH2;
   const n = candleData.length;
@@ -330,7 +339,7 @@ function drawChart() {
     ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(pL + cW3, y); ctx.stroke();
     ctx.fillStyle = '#3a5570'; ctx.font = '9px Share Tech Mono,monospace';
     ctx.textAlign = 'right';
-    ctx.fillText('$' + pv.toFixed(3), pL - 4, y + 3);
+    ctx.fillText('$' + pv.toFixed(4), pL - 4, y + 3);
   }
 
   ctx.strokeStyle = '#0e1620'; ctx.lineWidth = 0.5;
@@ -349,30 +358,6 @@ function drawChart() {
     ctx.fillStyle = '#3a5570'; ctx.font = '8px Share Tech Mono,monospace';
     ctx.textAlign = 'center';
     ctx.fillText(lbl, x, pT + cH2 + 16);
-  }
-
-  if (n >= 20) {
-    const ema = [];
-    const k = 2 / (20 + 1);
-    let e = candleData[0].c;
-    for (let i = 0; i < n; i++) {
-      e = candleData[i].c * k + e * (1 - k);
-      if (i >= 19) ema.push({x: pL+(i+0.5)*slotW, y: toY(e)});
-    }
-    ctx.strokeStyle = 'rgba(255, 180, 0, 0.65)'; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ema.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke();
-  }
-
-  if (n >= 7) {
-    const ema7 = [];
-    const k = 2 / (7 + 1);
-    let e = candleData[0].c;
-    for (let i = 0; i < n; i++) {
-      e = candleData[i].c * k + e * (1 - k);
-      if (i >= 6) ema7.push({x: pL+(i+0.5)*slotW, y: toY(e)});
-    }
-    ctx.strokeStyle = 'rgba(100, 160, 255, 0.5)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ema7.forEach((p,i) => i ? ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y)); ctx.stroke();
   }
 
   candleData.forEach((c, i) => {
@@ -402,18 +387,18 @@ function drawChart() {
   ctx.fillStyle = '#ff3d57';
   ctx.fillRect(pL+cW3+1, ly-9, pR-2, 18);
   ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Share Tech Mono,monospace'; ctx.textAlign = 'center';
-  ctx.fillText('$'+livePrice.toFixed(3), pL+cW3+1+(pR-2)/2, ly+3);
+  ctx.fillText('$'+livePrice.toFixed(4), pL+cW3+1+(pR-2)/2, ly+3);
 }
 
 function updateOB(mid) {
   const rowsS=[], rowsB=[];
   for (let i=6; i>=1; i--) {
-    const off = i*(0.003+Math.random()*0.005);
+    const off = i*(0.00005+Math.random()*0.00005);
     const sz = (Math.random()*8000+500).toFixed(0);
     rowsS.push({p:(mid+off).toFixed(4), sz:Number(sz).toLocaleString(), w:(+sz/8500*100).toFixed(0)});
   }
   for (let i=1; i<=6; i++) {
-    const off = i*(0.003+Math.random()*0.005);
+    const off = i*(0.00005+Math.random()*0.00005);
     const sz = (Math.random()*8000+500).toFixed(0);
     rowsB.push({p:(mid-off).toFixed(4), sz:Number(sz).toLocaleString(), w:(+sz/8500*100).toFixed(0)});
   }
@@ -423,7 +408,6 @@ function updateOB(mid) {
 
 function updateUI() {
   const p = livePrice;
-  const fmt = p.toFixed(4);
   const isDown = p < prevPrice;
 
   const tb = document.getElementById('tb-p');
@@ -440,8 +424,8 @@ function updateUI() {
   document.getElementById('tb-chg').textContent = '▼ -$' + Math.abs(chg).toFixed(4) + ' (' + Math.abs(pct) + '%)';
   document.getElementById('st-c').textContent = pct + '%';
 
-  document.getElementById('tb-hi').textContent = '$' + OPEN_PRICE.toFixed(2);
-  document.getElementById('tb-lo').textContent = '$0.023';
+  document.getElementById('tb-hi').textContent = '$8.00';
+  document.getElementById('tb-lo').textContent = '$0.0020';
 
   const dynamicCap = (1.24 * (p / OPEN_PRICE)).toFixed(4);
   document.getElementById('st-mc').textContent = '$' + dynamicCap + 'B';
@@ -561,10 +545,12 @@ window.switchTF = function(tf, btn) {
 
 function tick() {
   prevPrice = livePrice;
-  const noise = (Math.random() - 0.5) * 0.002;
+  const noise = (Math.random() - 0.5) * 0.00004; 
   let nextPrice = livePrice + noise;
-  if (nextPrice < 0.023) nextPrice = 0.023;
-  if (nextPrice > 0.032) nextPrice = 0.032;
+  
+  if (nextPrice < 0.0020) nextPrice = 0.0020;
+  if (nextPrice > 0.0030) nextPrice = 0.0030;
+  
   livePrice = nextPrice;
   updateLastCandle(livePrice);
   updateUI();
@@ -577,3 +563,6 @@ drawChart();
 setInterval(tick, 1000);
 window.addEventListener('resize', drawChart);
 </script>
+
+</body>
+</html>
